@@ -187,10 +187,11 @@ void Game::update(float deltaTime)
 {
 	updateGrids();
 	{
-		//Timer timer;
+		Timer timer;
 		for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
 			for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
 				tank_grid[i][j].checkColors();
+				//tank_grid[i][j].removeNull();
 			}
 		}
 	}

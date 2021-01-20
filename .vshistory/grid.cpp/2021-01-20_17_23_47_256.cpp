@@ -9,6 +9,7 @@ namespace Tmpl8
 	}
 
 	void Grid::checkColors() {
+		Timer timer;
 		bool blue = false;
 		bool red = false;
 

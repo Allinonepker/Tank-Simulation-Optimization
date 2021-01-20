@@ -186,15 +186,13 @@ Tank*& Game::find_closest_enemy(Tank& current_tank)
 void Game::update(float deltaTime)
 {
 	updateGrids();
-	{
-		//Timer timer;
-		for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
-			for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
-				tank_grid[i][j].checkColors();
-			}
+
+	for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
+		for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
+			tank_grid[i][j].checkColors();
+			//tank_grid[i][j].removeNull();
 		}
 	}
-
 
 	//Update tanks
 	for (Tank& tank : tanks)

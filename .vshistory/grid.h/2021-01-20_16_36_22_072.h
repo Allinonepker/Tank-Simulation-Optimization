@@ -10,6 +10,7 @@ namespace Tmpl8
         bool hasBlue;
         bool hasRed;
         void addTank(Tank*);
+        void removeNull();
         void checkColors();
         vector<Tank*> tanks;
         

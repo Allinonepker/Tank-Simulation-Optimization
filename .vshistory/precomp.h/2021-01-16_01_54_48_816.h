@@ -11,8 +11,8 @@
 #define SCRWIDTH 1280
 #define SCRHEIGHT 720
 
-#define ROWSIZE 16
-#define COLSIZE 16
+#define ROWSIZE 20
+#define COLSIZE 20
 
 
 // #define FULLSCREEN

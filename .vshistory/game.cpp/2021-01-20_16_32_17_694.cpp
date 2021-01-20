@@ -186,15 +186,13 @@ Tank*& Game::find_closest_enemy(Tank& current_tank)
 void Game::update(float deltaTime)
 {
 	updateGrids();
-	{
-		//Timer timer;
-		for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
-			for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
-				tank_grid[i][j].checkColors();
-			}
+
+	for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
+		for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
+			tank_grid[i][j].checkColors();
+			//tank_grid[i][j].removeNull();
 		}
 	}
-
 
 	//Update tanks
 	for (Tank& tank : tanks)
@@ -463,6 +461,9 @@ void Tmpl8::Game::measure_performance()
 
 void Tmpl8::Game::updateGrids()
 {
+
+	int tanku = 0;
+
 	for (size_t i = 0; i < SCRWIDTH / COLSIZE; i++) {
 		for (size_t j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
 			vector<Tank*>::iterator it;
@@ -480,10 +481,13 @@ void Tmpl8::Game::updateGrids()
 				}
 				else {
 					++it;
+					++tanku;
 				}
 			}
 		}
 	}
+	cout << tanku << endl;
+
 }
 
 // -----------------------------------------------------------

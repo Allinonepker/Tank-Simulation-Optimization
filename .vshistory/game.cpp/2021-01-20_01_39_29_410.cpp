@@ -118,6 +118,26 @@ void Game::shutdown()
 //// -----------------------------------------------------------
 //// Iterates through all tanks and returns the closest enemy tank for the given tank
 //// -----------------------------------------------------------
+//Tank& Game::find_closest_enemy(Tank& current_tank)
+//{
+//	float closest_distance = numeric_limits<float>::infinity();
+//	int closest_index = 0;
+//
+//	for (int i = 0; i < tanks.size(); i++)
+//	{
+//		if (tanks.at(i).allignment != current_tank.allignment && tanks.at(i).active)
+//		{
+//			float sqr_dist = fabsf((tanks.at(i).get_position() - current_tank.get_position()).sqr_length());
+//			if (sqr_dist < closest_distance)
+//			{
+//				closest_distance = sqr_dist;
+//				closest_index = i;
+//			}
+//		}
+//	}
+//
+//	return tanks.at(closest_index);
+//}
 
 Tank*& Game::find_closest_enemy(Tank& current_tank)
 {
@@ -156,7 +176,7 @@ Tank*& Game::find_closest_enemy(Tank& current_tank)
 	}
 
 	closest_distance = numeric_limits<float>::infinity();
-	int closest_index = 0;
+	int closest_index;
 	int index = 0;
 
 	for (Tank*& tank : tank_grid[closest_grid_x][closest_grid_y].tanks)
@@ -186,21 +206,35 @@ Tank*& Game::find_closest_enemy(Tank& current_tank)
 void Game::update(float deltaTime)
 {
 	updateGrids();
-	{
-		//Timer timer;
-		for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
-			for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
-				tank_grid[i][j].checkColors();
-			}
+
+	for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
+		for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
+			tank_grid[i][j].checkColors();
+			tank_grid[i][j].removeNull();
 		}
 	}
-
 
 	//Update tanks
 	for (Tank& tank : tanks)
 	{
 		if (tank.active)
 		{
+			//for (Tank& o_tank : tanks)
+			//{
+			//	if (&tank == &o_tank) continue;
+
+			//	vec2 dir = tank.get_position() - o_tank.get_position();
+			//	float dir_squared_len = dir.sqr_length();
+
+			//	float col_squared_len = (tank.get_collision_radius() + o_tank.get_collision_radius());
+			//	col_squared_len *= col_squared_len;
+
+			//	if (dir_squared_len < col_squared_len)
+			//	{
+			//		tank.push(dir.normalized(), 1.f);
+			//	}
+			//}
+
 			//Check tank collision and nudge tanks away from each other
 			size_t x_grid = tank.xGrid;
 			size_t y_grid = tank.yGrid;
@@ -230,6 +264,23 @@ void Game::update(float deltaTime)
 					}
 				}
 			}
+
+			//{
+	//for (Tank& o_tank : tanks)
+	//{
+	//	if (&tank == &o_tank) continue;
+
+	//	vec2 dir = tank.get_position() - o_tank.get_position();
+	//	float dir_squared_len = dir.sqr_length();
+
+	//	float col_squared_len = (tank.get_collision_radius() + o_tank.get_collision_radius());
+	//	col_squared_len *= col_squared_len;
+
+	//	if (dir_squared_len < col_squared_len)
+	//	{
+	//		tank.push(dir.normalized(), 1.f);
+	//	}
+	//}
 
 	//Move tanks according to speed and nudges (see above) also reload
 			tank.tick();
@@ -463,23 +514,31 @@ void Tmpl8::Game::measure_performance()
 
 void Tmpl8::Game::updateGrids()
 {
-	for (size_t i = 0; i < SCRWIDTH / COLSIZE; i++) {
-		for (size_t j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
-			vector<Tank*>::iterator it;
-			for (it = tank_grid[i][j].tanks.begin(); it != tank_grid[i][j].tanks.end(); ) {
-				int xGrid = ((*it)->position.x / (SCRWIDTH / COLSIZE));
-				int yGrid = ((*it)->position.y / (SCRHEIGHT / ROWSIZE));
-				//if (!(*it)->active) {
-				//	it = tank_grid[i][j].tanks.erase(it);
-				//}
-				if ((*it)->xGrid != xGrid || (*it)->yGrid != yGrid) {
-					//delete* it;
-					(*it)->setXY(xGrid, yGrid);
-					tank_grid[xGrid][yGrid].addTank(*it);
-					it = tank_grid[i][j].tanks.erase(it);
-				}
-				else {
-					++it;
+	//int id = 0;
+	//for (Tank& tank : tanks) {
+	//	int xGrid = ((int)tank.position.x / (SCRWIDTH / COLSIZE));
+	//	int yGrid = ((int)tank.position.y / (SCRHEIGHT / ROWSIZE));
+	//	if (tank.xGrid != xGrid || tank.yGrid != yGrid) {
+	//		tank.setXY(xGrid, yGrid);
+	//		Tank* tanko = &tank;
+	//		tank_grid[xGrid][yGrid].addTank(tanko);
+	//		tank_grid[tank.xGrid][tank.yGrid].removeTank(id);
+	//	}
+	//}
+
+	for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
+		for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
+			for ( Tank *&tank : tank_grid[i][j].tanks) {
+				int xGrid = ((int)tank->position.x / (SCRWIDTH / COLSIZE));
+				int yGrid = ((int)tank->position.y / (SCRHEIGHT / ROWSIZE));
+				if (tank->xGrid != xGrid || tank->yGrid != yGrid) {
+					tank->setXY(xGrid, yGrid);
+					Tank* tankpr = tank;
+					tank_grid[tank->xGrid][tank->yGrid].removeTank(tank);
+					tank_grid[xGrid][yGrid].addTank(tankpr);
+
+
+					int i = 0;
 				}
 			}
 		}
