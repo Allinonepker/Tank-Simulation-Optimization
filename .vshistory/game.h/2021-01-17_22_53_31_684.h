@@ -20,7 +20,7 @@ class Game
     void insertion_sort_tanks_health(const std::vector<Tank>& original, std::vector<const Tank*>& sorted_tanks, int begin, int end);
     void measure_performance();
     void updateGrids();
-    Tank* find_closest_enemy(Tank& current_tank);
+    Tank& find_closest_enemy(Tank& current_tank);
     //Tank& find_closest_enemy(Tank& current_tank);
 
     void mouse_up(int button)

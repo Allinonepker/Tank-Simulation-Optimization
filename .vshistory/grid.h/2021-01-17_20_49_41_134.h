@@ -9,12 +9,11 @@ namespace Tmpl8
 
         bool hasBlue;
         bool hasRed;
-        void addTank(Tank*);
-        void removeTank(int);
-        void removeTank(Tank* tank);
+        void addTank(unique_ptr<Tank>);
+        void removeTank(int ID);
         void removeNull();
         void checkColors();
-        vector<Tank*> tanks;
+        vector<unique_ptr<Tank>> tanks;
         
     };
 } // namespace Tmpl8

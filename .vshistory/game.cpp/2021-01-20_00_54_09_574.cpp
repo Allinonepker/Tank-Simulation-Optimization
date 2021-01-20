@@ -364,8 +364,8 @@ void Game::update(float deltaTime)
 			int y_grid_min = ((abs((int)particle_beam.min_position.y)) / (SCRHEIGHT / ROWSIZE));
 			int y_grid_max = ((abs((int)particle_beam.max_position.y) + particle_beam.max_position.y) / (SCRHEIGHT / ROWSIZE));
 
-			for (size_t i = x_grid_min; i <= x_grid_max; i++) {
-				for (size_t j = y_grid_min; j <= y_grid_max; j++) {
+			for (int i = x_grid_min; i <= x_grid_max; i++) {
+				for (int j = y_grid_min; j <= y_grid_max; j++) {
 					for (Tank*& tanko : tank_grid[i][j].tanks) {
 						if (tanko->active && particle_beam.rectangle.intersects_circle(tanko->get_position(), tanko->get_collision_radius()))
 						{

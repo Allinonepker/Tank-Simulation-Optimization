@@ -23,13 +23,6 @@ namespace Tmpl8
 		//}
 	}
 
-	void Grid::removeTank(Tank *tank)
-	{
-		tanks.erase(std::remove(tanks.begin(), tanks.end(), tank), tanks.end());
-	}
-
-
-
 	void Grid::removeNull() {
 		tanks.erase(std::remove(tanks.begin(), tanks.end(), nullptr),
 			tanks.end());

@@ -23,13 +23,6 @@ namespace Tmpl8
 		//}
 	}
 
-	void Grid::removeTank(Tank *tank)
-	{
-		tanks.erase(std::remove(tanks.begin(), tanks.end(), tank), tanks.end());
-	}
-
-
-
 	void Grid::removeNull() {
 		tanks.erase(std::remove(tanks.begin(), tanks.end(), nullptr),
 			tanks.end());
@@ -39,7 +32,7 @@ namespace Tmpl8
 		bool blue = false;
 		bool red = false;
 
-		for (Tank* tank : tanks) {
+		for (unique_ptr<Tank> &tank : tanks) {
 			if (!tank->active)
 				continue;
 

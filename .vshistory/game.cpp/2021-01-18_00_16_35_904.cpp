@@ -179,7 +179,7 @@ Tank* Game::find_closest_enemy(Tank& current_tank)
 	int closest_index;
 	int index = 0;
 
-	for (Tank*& tank : tank_grid[closest_grid_x][closest_grid_y].tanks)
+	for (Tank* tank : tank_grid[closest_grid_x][closest_grid_y].tanks)
 	{
 		if (tank->active && tank->allignment != current_tank.allignment)
 		{
@@ -210,7 +210,7 @@ void Game::update(float deltaTime)
 	for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
 		for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
 			tank_grid[i][j].checkColors();
-			tank_grid[i][j].removeNull();
+			//tank_grid[i][j].removeNull();
 		}
 	}
 
@@ -236,8 +236,8 @@ void Game::update(float deltaTime)
 			//}
 
 			//Check tank collision and nudge tanks away from each other
-			size_t x_grid = tank.xGrid;
-			size_t y_grid = tank.yGrid;
+			int x_grid = tank.xGrid;
+			int y_grid = tank.yGrid;
 			int x_bound_left, x_bound_right, y_bound_bottom, y_bound_top;
 
 			(x_grid == 0) ? x_bound_left = 0, x_bound_right = x_grid + 1 : (x_grid == SCRWIDTH / COLSIZE - 1) ? x_bound_right = x_grid, x_bound_left = x_grid - 1 : x_bound_left = x_grid - 1,
@@ -246,9 +246,9 @@ void Game::update(float deltaTime)
 			(y_grid == 0) ? y_bound_bottom = 0, y_bound_top = y_grid + 1 : (y_grid == SCRHEIGHT / ROWSIZE - 1) ? y_bound_top = y_grid, y_bound_bottom = y_grid - 1 : y_bound_bottom = y_grid - 1,
 				y_bound_top = y_grid + 1;
 
-			for (size_t i = x_bound_left; i <= x_bound_right; i++) {
-				for (size_t j = y_bound_bottom; j <= y_bound_top; j++) {
-					for (Tank*& tanko : tank_grid[i][j].tanks) {
+			for (int i = x_bound_left; i <= x_bound_right; i++) {
+				for (int j = y_bound_bottom; j <= y_bound_top; j++) {
+					for (Tank* tanko : tank_grid[i][j].tanks) {
 						if (tank.ID == tanko->ID) continue;
 
 						vec2 dir = tank.get_position() - tanko->get_position();
@@ -331,7 +331,7 @@ void Game::update(float deltaTime)
 					continue;
 				if (mustbreak)
 					break;
-				for (Tank*& tank : tank_grid[i][j].tanks) {
+				for (Tank* tank : tank_grid[i][j].tanks) {
 					if (tank->active && (tank->allignment != rocket.allignment) && rocket.intersects(tank->position, tank->collision_radius)) {
 						explosions.push_back(Explosion(&explosion, tank->position));
 
@@ -364,9 +364,9 @@ void Game::update(float deltaTime)
 			int y_grid_min = ((abs((int)particle_beam.min_position.y)) / (SCRHEIGHT / ROWSIZE));
 			int y_grid_max = ((abs((int)particle_beam.max_position.y) + particle_beam.max_position.y) / (SCRHEIGHT / ROWSIZE));
 
-			for (size_t i = x_grid_min; i <= x_grid_max; i++) {
-				for (size_t j = y_grid_min; j <= y_grid_max; j++) {
-					for (Tank*& tanko : tank_grid[i][j].tanks) {
+			for (int i = x_grid_min; i <= x_grid_max; i++) {
+				for (int j = y_grid_min; j <= y_grid_max; j++) {
+					for (Tank* tanko : tank_grid[i][j].tanks) {
 						if (tanko->active && particle_beam.rectangle.intersects_circle(tanko->get_position(), tanko->get_collision_radius()))
 						{
 							if (tanko->hit(particle_beam.damage))
@@ -528,16 +528,13 @@ void Tmpl8::Game::updateGrids()
 
 	for (int i = 0; i < SCRWIDTH / COLSIZE; i++) {
 		for (int j = 0; j < SCRHEIGHT / ROWSIZE; j++) {
-			for ( Tank *&tank : tank_grid[i][j].tanks) {
+			for ( Tank *tank : tank_grid[i][j].tanks) {
 				int xGrid = ((int)tank->position.x / (SCRWIDTH / COLSIZE));
 				int yGrid = ((int)tank->position.y / (SCRHEIGHT / ROWSIZE));
 				if (tank->xGrid != xGrid || tank->yGrid != yGrid) {
 					tank->setXY(xGrid, yGrid);
-					Tank* tankpr = tank;
-					tank_grid[tank->xGrid][tank->yGrid].removeTank(tank);
-					tank_grid[xGrid][yGrid].addTank(tankpr);
-
-
+					tank_grid[xGrid][yGrid].addTank(move(tank));
+					//tank_grid[tank->xGrid][tank->yGrid].removeTank(tank);
 					int i = 0;
 				}
 			}

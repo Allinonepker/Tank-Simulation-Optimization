@@ -11,7 +11,6 @@ namespace Tmpl8
         bool hasRed;
         void addTank(Tank*);
         void removeTank(int);
-        void removeTank(Tank* tank);
         void removeNull();
         void checkColors();
         vector<Tank*> tanks;

@@ -3,32 +3,25 @@
 
 namespace Tmpl8
 {
-	void Grid::addTank(Tank *tank)
+	void Grid::addTank(unique_ptr<Tank> tank)
 	{
-		tanks.push_back(tank);
+		tanks.push_back(move(tank));
 	}
 
 	void Grid::removeTank(int ID)
 	{
-		for (int i = 0; i < tanks.size(); i++) {
-			if (tanks[i]->ID == ID)
-				tanks.erase(tanks.begin() + i);
-		}
-	
-		//auto it = find_if(tanks.begin(), tanks.end(), [&](unique_ptr<Tank> &tank) { return tank->ID == ID; });
-	
-		//if (it != tanks.end()) {
-		//	auto retval = std::move(*it);
-		//	tanks.erase(it);
+		//for (int i = 0; i < tanks.size(); i++) {
+		//	if (tanks[i]->ID == ID)
+		//		tanks.erase(tanks.begin() + i);
 		//}
+	
+		auto it = find_if(tanks.begin(), tanks.end(), [&](unique_ptr<Tank> &tank) { return tank->ID == ID; });
+	
+		if (it != tanks.end()) {
+			auto retval = std::move(*it);
+			tanks.erase(it);
+		}
 	}
-
-	void Grid::removeTank(Tank *tank)
-	{
-		tanks.erase(std::remove(tanks.begin(), tanks.end(), tank), tanks.end());
-	}
-
-
 
 	void Grid::removeNull() {
 		tanks.erase(std::remove(tanks.begin(), tanks.end(), nullptr),
@@ -39,7 +32,7 @@ namespace Tmpl8
 		bool blue = false;
 		bool red = false;
 
-		for (Tank* tank : tanks) {
+		for (unique_ptr<Tank> &tank : tanks) {
 			if (!tank->active)
 				continue;
 

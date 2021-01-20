@@ -246,8 +246,8 @@ void Game::update(float deltaTime)
 			(y_grid == 0) ? y_bound_bottom = 0, y_bound_top = y_grid + 1 : (y_grid == SCRHEIGHT / ROWSIZE - 1) ? y_bound_top = y_grid, y_bound_bottom = y_grid - 1 : y_bound_bottom = y_grid - 1,
 				y_bound_top = y_grid + 1;
 
-			for (size_t i = x_bound_left; i <= x_bound_right; i++) {
-				for (size_t j = y_bound_bottom; j <= y_bound_top; j++) {
+			for (int i = x_bound_left; i <= x_bound_right; i++) {
+				for (int j = y_bound_bottom; j <= y_bound_top; j++) {
 					for (Tank*& tanko : tank_grid[i][j].tanks) {
 						if (tank.ID == tanko->ID) continue;
 
@@ -364,8 +364,8 @@ void Game::update(float deltaTime)
 			int y_grid_min = ((abs((int)particle_beam.min_position.y)) / (SCRHEIGHT / ROWSIZE));
 			int y_grid_max = ((abs((int)particle_beam.max_position.y) + particle_beam.max_position.y) / (SCRHEIGHT / ROWSIZE));
 
-			for (size_t i = x_grid_min; i <= x_grid_max; i++) {
-				for (size_t j = y_grid_min; j <= y_grid_max; j++) {
+			for (int i = x_grid_min; i <= x_grid_max; i++) {
+				for (int j = y_grid_min; j <= y_grid_max; j++) {
 					for (Tank*& tanko : tank_grid[i][j].tanks) {
 						if (tanko->active && particle_beam.rectangle.intersects_circle(tanko->get_position(), tanko->get_collision_radius()))
 						{

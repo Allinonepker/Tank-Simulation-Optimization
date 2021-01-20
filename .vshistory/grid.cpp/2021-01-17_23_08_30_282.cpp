@@ -25,10 +25,20 @@ namespace Tmpl8
 
 	void Grid::removeTank(Tank *tank)
 	{
-		tanks.erase(std::remove(tanks.begin(), tanks.end(), tank), tanks.end());
+		for (int i = 0; i < tanks.size(); i++) {
+			if (tanks[i]->ID == ID)
+				tanks.erase(tanks.begin() + i);
+		}
+
+		//auto it = find_if(tanks.begin(), tanks.end(), [&](unique_ptr<Tank> &tank) { return tank->ID == ID; });
+
+		//if (it != tanks.end()) {
+		//	auto retval = std::move(*it);
+		//	tanks.erase(it);
+		//}
 	}
 
-
+	myVec.erase(std::remove(myVec.begin(), myVec.end(), obj37), myvec.end());
 
 	void Grid::removeNull() {
 		tanks.erase(std::remove(tanks.begin(), tanks.end(), nullptr),
