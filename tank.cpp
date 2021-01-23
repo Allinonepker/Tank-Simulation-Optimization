@@ -40,6 +40,10 @@ Tank::~Tank()
 {
 }
 
+bool operator<(const Tank& a, const Tank& b) {
+    return a.health < b.health;
+}
+
 void Tank::tick()
 {
     vec2 direction = (target - position).normalized();

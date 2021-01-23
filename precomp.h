@@ -89,5 +89,6 @@ using namespace Tmpl8;
 #include "particle_beam.h"
 #include "grid.h"
 #include "game.h"
+#include "QuadTree.h"
 
 // clang-format on
