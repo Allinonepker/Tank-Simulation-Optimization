@@ -3,7 +3,7 @@
 
 namespace Tmpl8
 {
-	void Grid::insertTank(Tank *tank)
+	void Grid::insertTank(Tank* tank)
 	{
 		tanks.push_back(tank);
 	}

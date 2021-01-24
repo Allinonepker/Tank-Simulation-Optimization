@@ -7,6 +7,7 @@ namespace Tmpl8
 	class Rocket;
 	class Smoke;
 	class Particle_beam;
+	class ThreadPool;
 
 	class Game
 	{
@@ -14,14 +15,29 @@ namespace Tmpl8
 		void set_target(Surface* surface) { screen = surface; }
 		void init();
 		void shutdown();
+		void smokeFunc();;
 		void update(float deltaTime);
+		void drawRockets();
+		void drawSmokes();
+		void drawBeams();
+		void drawExplosions();
+		void drawSprites();
+		void drawHealthBar();
 		void draw();
 		void tick(float deltaTime);
 		int partition(vector<Tank*>& values, int left, int right);
-		void quicksort(vector<Tank*>& values, int left, int right);
+		void quicksort(vector<Tank*>& values, int left, int right, int depth);
+		//void quicksort(vector<Tank*>& values, int left, int right);
 		void measure_performance();
 		void updateGrids();
 		Tank*& find_closest_enemy(Tank& current_tank);
+		void collisionTanks();
+
+		void particleBeam();
+
+		void explosionsFunc();
+
+		void rocketsFunc();
 
 		void mouse_up(int button)
 		{ /* implement if you want to detect mouse button presses */
